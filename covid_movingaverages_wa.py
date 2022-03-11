@@ -143,7 +143,16 @@ print('Change from yesterday: ' + str(c7))
 
 
 # In[21]:
-
+days = []
+i = 0
+while i < len(a):
+    days.append(i)
+    i += 1
+plt.plot(days, a)
+plt.xlabel("Days since first recorded Covid case")
+plt.ylabel("Daily Covid Cases")
+plt.title("Daily Covid cases in W.A. since 25/01/20")
+plt.show()
 
 folder = 'C:/Users/Azzla/Documents/'
 #Plot 3 day average over all time (since 25 January 2020)
