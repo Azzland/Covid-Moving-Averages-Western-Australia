@@ -99,6 +99,8 @@ for i in range(x):
 wa_data.append(2365)
 wa_data.append(2847)
 wa_data.append(3594)
+wa_data.append(4535)
+wa_data.append(5005)
 
 a = wa_data
 
