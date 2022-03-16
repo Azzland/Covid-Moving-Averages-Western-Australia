@@ -1,6 +1,104 @@
 #-*-coding:utf8;-*-
 #qpy:console
 import csv
+import datetime
+#Function converts date tp Julian date
+def dates_to_julian (stddate):
+    fmt='%Y-%m-%d'
+    sdtdate = datetime.datetime.strptime(stddate, fmt)
+    sdtdate = sdtdate.timetuple()
+    jdate = sdtdate.tm_yday
+    return(jdate)
+
+
+def julian_to_date (jdate):
+    fmt = '%Y%j'
+    datestd = datetime.datetime.strptime(jdate, fmt).date()
+    return(datestd)
+
+def findthedate(startdate, numdayssince):
+    monthdays = [31,28,31,30,31,30,31,31,30,31,30,31]
+    monthdaysleapyr = [31,29,31,30,31,30,31,31,30,31,30,31]
+    if len(startdate)<3:
+        finaldate = "Input Error, date not in correct format!"
+    else:
+        day = startdate[0]
+        month = startdate[1]
+        year = startdate[2]
+        
+        try:
+            day = int(day)
+            month = int(month)
+            year = int(year)
+        except ValueError:
+            finaldate = "Input Error, date not in correct format!"
+         
+        yeardays = []
+        k = numdayssince/(365.25)
+        k = int(k+1)
+        k += 1
+        
+        i = year
+        while i < (year + k):
+            n = i/4
+            if n == int(n):
+                yeardays.append(366)
+            else:
+                yeardays.append(365)
+            i += 1
+        #print(yeardays)
+        numyears = 0
+        x = 0
+        while numdayssince >= 0:
+            numdayssince -= yeardays[x]
+            x += 1
+        
+        if numdayssince < 0:
+            numdayssince += yeardays[x]
+            x -= 1
+           
+        newyear = year + x
+        #print(newyear)
+        #print(numdayssince)  
+        
+        n = newyear/4
+        if n == int(n):
+            montharray = monthdaysleapyr
+        else:
+            montharray = monthdays
+        
+        daysleftinmonth = montharray[month-1] - day
+        #print(daysleftinmonth)
+        montharray[month-1] = daysleftinmonth
+        
+        m = month-1
+        while numdayssince >= 0:
+            numdayssince -= montharray[m]
+            if m == 11:
+                m = 0
+            else:
+                m += 1
+       
+        if numdayssince < 0:
+            numdayssince += montharray[m]
+            m -= 1
+     
+        newmonth = m + 1
+        newdate = []
+        newdate.append(numdayssince)
+        newdate.append(newmonth)
+        newdate.append(newyear)
+        
+        monthnames = ['January','February','March','April','May','June','July','August','September','October','November','December']
+        
+        string_numericmonth = str(newdate[0]) + "/" + str(newdate[1]) + "/" + str(newdate[2])
+        a = newdate[1] - 1 
+        string_Englishmonth = str(newdate[0]) + " " + str(monthnames[a]) + " " + str(newdate[2])
+        finaldate = string_numericmonth + ' (' + string_Englishmonth + ').'
+        return finaldate
+        
+
+    
 
 #Function reverses the order of elements in an array
 def array_reverse(lst):
@@ -92,6 +190,13 @@ for i in range(x):
 wa_data.append(2365)
 wa_data.append(2847)
 wa_data.append(3594)
+wa_data.append(4535)
+wa_data.append(5005)
+wa_data.append(4300)
+wa_data.append(3602)
+wa_data.append(4037)
+wa_data.append(5377)
+wa_data.append(6062)
 
 a = wa_data
 
@@ -132,7 +237,27 @@ print('Change from yesterday: ' + str(c5))
 print('7 day moving average: ' + str(v7[n7-1]))
 print('Change from yesterday: ' + str(c7))
 
+print('Daily Record: ')
+day_of_record = -1
+record = max(wa_data)
+for i in range(len(wa_data)):
+    if wa_data[i] == record:
+        day_of_record = i+1
 
+
+print(str(record) + ' cases ' + str(day_of_record) + ' days after the first ever recorded Covid case.')
+
+date_of_record = findthedate([25,1,2020], day_of_record)            
+print("Day record set: " + str(date_of_record))
+
+current_date = findthedate([25,1,2020], len(a))            
+print("Date last updated: " + str(current_date))
+
+#Date: 25-Jan-2020
+#Julian Date: 20025
+
+#Today's date is 15-Mar-2022 (UTC).
+#Today's Julian Date is 22074 .
 
 
 
